@@ -1,0 +1,316 @@
+;Main colors, not all are used any more
+[colors]
+background = #00000000
+background-alt = #444
+foreground = #eee
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+linecolor = #FFFFFF
+linecolorDark = #cccccc
+
+;Top bar
+[bar/main]
+
+;Location
+;---------
+;Monitor is set in the launch.sh script because it detect second monitor;
+;Normaly you would use something like monitor=eDP-1
+monitor = ${env:MONITOR:}
+
+;Size
+;---------
+width = 100%
+height = 30
+
+;Suroundings
+;--------------
+border-size = 0
+border-color = #00000000
+
+padding-left = 3
+padding-right = 3
+
+module-margin-left = 1
+module-margin-right = 1
+
+;Fonts
+;------------------
+
+font-0 = Hack Nerd Font:pixelsize=10;1
+font-1 = fixed:pixelsize=10;1
+font-2 = Siji:size=20;1
+font-3 = unifont:fontformat=truetype:size=8:antialias=false;1
+;Different sizes so the icons look good
+font-4 = Hack Nerd Font:pixelsize=13;2
+font-5 = Hack Nerd Font:pixelsize=22;4
+
+;Misc
+;------------
+fixed-center = true
+line-size = 3
+modules-left =  backlight volume bluetooth
+modules-center = i3
+modules-right =   wlan eth nordvpn date time powermenu
+tray-position = right
+tray-padding = 2
+
+
+;Color
+;------------
+background = ${colors.background}
+foreground = ${colors.foreground}
+line-color = ${colors.linecolor}
+
+[bar/bottom]
+inherit = bar/main
+bottom=true
+; 2 batteries for Thinkpad, so normaly 1
+modules-left = battery battery2
+modules-center = mpd
+modules-right = network memory cpu temperature
+
+; Second bar to use on second monitor
+[bar/secondary]
+inherit = bar/main
+monitor = ${env:MONITOR:}
+
+
+;Misc
+;------------
+fixed-center = true
+line-size = 3
+modules-left =
+modules-center = i3
+modules-right =  date time powermenu
+tray-position = right
+tray-padding = 2
+
+
+;---------;
+; Modules ;
+;---------;
+
+[module/i3]
+type = internal/i3
+
+pin-workspaces = true
+strip-wsnumbers = true
+enable-scroll = false
+
+;Icons for work spaces
+ws-icon-0 = 1;%{T6}%{T-}
+ws-icon-1 = 2;%{T6}%{T-}
+ws-icon-2 = 3;%{T6}謹%{T-}
+ws-icon-3 = 4;%{T5}%{T-}
+ws-icon-4 = 5;%{T5}%{T-}
+ws-icon-5 = 6;%{T6}%{T-}
+ws-icon-6 = 7;%{T6}%{T-}
+ws-icon-7 = 8;%{T6}謹%{T-}
+ws-icon-8 = 9;%{T5}9%{T-}
+
+
+label-focused = %icon%
+label-focused-foreground = ${colors.linecolor}
+label-focused-padding = 1
+
+label-unfocused = %icon%
+label-unfocused-foreground = ${colors.linecolorDark}
+label-unfocused-padding = 1
+
+label-visible = %icon%
+label-visible-foreground = ${colors.linecolorDark}
+label-visible-padding = 1
+
+label-separator = |
+label-separator-padding = 0.6
+
+[module/time]
+type = internal/date
+
+interval = 1.0
+
+date =  %H:%M
+
+;clock icon: (not in use)
+[module/date]
+type = internal/date
+date =  %e %B
+label = %date%
+
+[module/battery]
+type = internal/battery
+
+battery = BAT1
+
+poll-interval = 10
+
+full-at = 95
+
+label-discharging = %percentage%%
+label-charging = %percentage%%
+label-full = %percentage%%
+
+format-discharging = %{T5}<ramp-capacity>%{T-} <label-discharging>
+format-full = %{T5}<ramp-capacity>%{T-} <label-full>
+format-charging =  <label-charging>
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-5 = 
+ramp-capacity-6 = 
+ramp-capacity-7 = 
+ramp-capacity-8 = 
+ramp-capacity-9 = 
+ramp-capacity-10 = 
+
+[module/battery2]
+inherit = module/battery
+battery = BAT0
+
+
+;
+
+[module/volume]
+type = internal/alsa
+
+format-volume = <ramp-volume> <label-volume>
+format-muted =%{T5} 婢 %{T-}
+ramp-volume-0 = %{T5}奄%{T-}
+ramp-volume-1 = %{T5}奔%{T-}
+ramp-volume-2 = %{T5}墳%{T-}
+
+
+[module/mpd]
+type = internal/mpd
+label-offline = mpd is offline
+format-online = <label-song> <bar-progress>
+format-offline = <label-offline>
+host = 127.0.0.1
+port = 6600
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+
+label-song = %title% - %artist%
+label-song-maxlen = 70
+label-song-ellipsis = true
+label-time = %elapsed% / %total%
+bar-progress-width = 20
+bar-progress-indicator =┤
+bar-progress-fill = ─
+bar-progress-empty = ╌
+interval = 1
+
+[module/backlight]
+type = internal/backlight
+
+; Use the following command to list available cards:
+; $ ls -1 /sys/class/backlight/
+card = acpi_video0
+
+format = %{T5}<ramp>%{T-} <label>
+
+label = %percentage%%
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+
+[module/wlan]
+type = internal/network
+
+interface = wlp4s0
+
+interval = 5
+;nmtui give the network monitor to select a wifi netork, this way it is on click
+label-connected =%{A1:urxvt -e nmtui:}%{T5} 直%{T-}%{A}
+label-disconnected = %{A1:urxvt -e nmtui:}%{T5} 睊%{T-}%{A}
+
+[module/eth]
+type = internal/network
+interface = enp0s31f6
+interval = 5
+
+format-connected-prefix= " "
+label-connected = %local_ip%
+
+[module/cpu]
+type = internal/cpu
+label =  %percentage%%
+
+
+[module/memory]
+type = internal/memory
+label =  %gb_used%
+
+[module/network]
+type = internal/network
+interface = wlp4s0
+label-connected =  %downspeed% |  %upspeed%
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+
+label =%{T5}﨎%{T-} %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.secondary}
+
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = 襤
+label-open-foreground = ${colors.linecolor}
+label-close = 窱 cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = sudo reboot
+
+menu-2-0 = power off
+menu-2-0-exec = sudo poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+;------Self made scripts
+
+;Show if connected with the exec= script which reterns the icon
+;click left is the toggle script
+[module/nordvpn]
+type = custom/script
+exec = ~/.config/polybar/scripts/nordvpn.sh
+click-left = $HOME/.config/polybar/scripts/nordvpnSwitch.sh
+interval = 10
+label = %{T5}%output%%{T-}
+
+;Samme bases as the NordVPN scripts, icon script and toggle
+[module/bluetooth]
+type = custom/script
+click-left = $HOME/.config/polybar/scripts/bluetooth_ON-OFF.sh
+exec = $HOME/.config/polybar/scripts/bluetooth_connected.sh
+label = %{T5}%output%%{T5}
+interval = 10
+
+; vim:ft=dosini
