@@ -2,8 +2,8 @@
 
 Read the wiki in the polybar github
 
-My launch scripts contains code for multiple screens, and normal example can be found on the wiki.
-To make to i3 workspace icons work properly you on multimonitor you sould bind them in the i3 config.
+My launch scripts contains code for multiple screens, a normal example can be found on the wiki.
+To make to i3 workspace icons work properly on multimonitor you have to bind them to a screen in the i3 config.
 
 Bluetooth and Nordvpn are custom modules, check the scripts folder for the scripts that are used
 
